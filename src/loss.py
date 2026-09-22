@@ -2,7 +2,13 @@
 import torch.nn.functional as F
 
 
-def vae_loss(reconstructed, x, mu, logvar):
+def vae_loss(
+    reconstructed,
+    x,
+    mu,
+    logvar,
+    beta=0.01
+):
     reconstruction_loss = F.mse_loss(
         reconstructed,
         x,
@@ -13,6 +19,6 @@ def vae_loss(reconstructed, x, mu, logvar):
         1 + logvar - mu.pow(2) - logvar.exp()
     )
 
-    total_loss = reconstruction_loss + kl_loss
+    total_loss = reconstruction_loss + beta * kl_loss
 
     return total_loss, reconstruction_loss, kl_loss
