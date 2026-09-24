@@ -3,7 +3,9 @@ numpy
 scikit-learn
 torch
 pytest
-
 fastapi
 uvicorn
 httpx
+streamlit
+openai
+requests
