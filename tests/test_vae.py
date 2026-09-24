@@ -1,10 +1,10 @@
-﻿import torch
+import torch
 
 from src.vae import VAE
 
 
 def test_vae_output_shapes():
-    input_dim = 9
+    input_dim = 8
     latent_dim = 4
     batch_size = 8
 
@@ -23,7 +23,7 @@ def test_vae_output_shapes():
 
 
 def test_decoder_output_range():
-    model = VAE(input_dim=9, latent_dim=4)
+    model = VAE(input_dim=8, latent_dim=4)
 
     z = torch.randn(8, 4)
     decoded = model.decode(z)

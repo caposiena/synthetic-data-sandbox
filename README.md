@@ -1,100 +1,90 @@
-﻿# Synthetic Data Sandbox
+# Synthetic Data Sandbox
 
-Final project for Module 6.
+Project developed for Module 6.
 
-The project uses a Variational Autoencoder implemented in PyTorch to generate synthetic tabular data.
+The application generates synthetic tabular data using a Variational Autoencoder implemented in PyTorch.
 
 The example dataset is the Pima Indians Diabetes dataset.
 
-## Project structure
+The main workflow is:
 
-- data preprocessing with pandas and scikit-learn
-- VAE model implemented in PyTorch
-- training with DataLoader and Adam
-- synthetic data generation
-- comparison between real and synthetic statistics
-- FastAPI backend
-- Streamlit interface
-- optional natural language analysis
+    dataset
+    preprocessing
+    VAE training
+    synthetic data generation
+    statistical comparison
 
-## Preprocessing
+The project also includes a FastAPI backend, a Streamlit interface and an optional natural language analysis feature.
 
-Invalid zero values in selected medical variables are treated as missing values.
+## Data preparation
 
-Missing values are replaced with the median and numerical features are scaled with MinMaxScaler.
+Some medical variables in the dataset contain zero values that are treated as missing values.
 
-## VAE
+These values are replaced with the median.
 
-The encoder produces the mean and log variance of the latent distribution.
+The numerical features are then scaled between 0 and 1 with MinMaxScaler.
 
-Sampling uses the reparameterization trick.
+The Outcome column is kept separate from the VAE training.
 
-The decoder reconstructs the numerical features.
+## VAE model
 
-The loss combines reconstruction error and KL divergence. A small beta value is used to reduce excessive concentration of generated samples.
+The encoder reduces the input features to a latent representation.
 
-Outcome is generated separately according to its observed proportion in the training dataset.
+Two vectors are produced:
 
-## Installation
+    mean
+    log variance
 
-Create a virtual environment and install the dependencies:
+Sampling is performed with the reparameterization trick.
+
+The decoder reconstructs the original numerical features.
+
+The loss combines reconstruction error and KL divergence.
+
+A small beta value is used to reduce the tendency of the generated samples to concentrate too strongly around the average values.
+
+Outcome is generated separately using the proportion observed in the original dataset.
+
+## Running the project
+
+Install the dependencies:
 
     pip install -r requirements.txt
 
-## Training
-
-Run:
+Train the model:
 
     python -m src.train
 
-The trained model is saved in:
-
-    models/vae_model.pt
-
-## Generate synthetic data
-
-Run:
+Generate synthetic data:
 
     python -m src.generate
 
-The generated dataset is saved in:
-
-    output/synthetic_diabetes.csv
-
-## Evaluation
-
-Run:
+Compare real and synthetic statistics:
 
     python -m src.evaluation
 
-The script compares mean, standard deviation and Outcome distribution between the real and synthetic datasets.
-
-## API
-
-Start FastAPI with:
+Start the API:
 
     uvicorn api.main:app --reload
 
-The main endpoints are:
+Start the Streamlit interface:
+
+    streamlit run app.py
+
+## API endpoints
 
     GET /status
     POST /train
     POST /generate
     GET /statistics
 
-## Streamlit
-
-Start the interface with:
-
-    streamlit run app.py
-
 ## Natural language analysis
 
-The natural language section is optional.
+The Streamlit interface includes an optional section for asking questions about the synthetic dataset.
 
-Set the OPENAI_API_KEY environment variable before starting Streamlit to enable it.
+To enable it, set the OPENAI_API_KEY environment variable before starting the application.
 
-No API key is stored in the repository.
+The API key is not stored in the repository.
 
 ## Tests
 
@@ -102,10 +92,10 @@ Run:
 
     pytest -v
 
-## Limitations
+## Notes
 
-The VAE reproduces average values reasonably well but the synthetic distributions remain less variable than the original data.
+The model reproduces the average values of the original dataset reasonably well.
 
-This is expected from the small model and dataset and is visible in the statistical comparison.
+The generated distributions are generally less variable than the original ones. This is a limitation of the small VAE used in this project.
 
-Synthetic data generation alone should not be considered a formal guarantee of anonymization.
+Synthetic data generation should not be considered a formal guarantee of anonymization.

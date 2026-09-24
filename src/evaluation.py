@@ -1,4 +1,4 @@
-﻿import pandas as pd
+import pandas as pd
 
 from src.preprocessing import load_data, preprocess_data
 

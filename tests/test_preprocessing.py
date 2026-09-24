@@ -1,4 +1,4 @@
-﻿from src.preprocessing import load_data, preprocess_data
+from src.preprocessing import load_data, preprocess_data
 
 
 def test_preprocessing_output():

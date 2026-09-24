@@ -1,13 +1,13 @@
-﻿import torch
+import torch
 
 from src.loss import vae_loss
 from src.vae import VAE
 
 
 def test_vae_loss_is_positive():
-    model = VAE(input_dim=9, latent_dim=4)
+    model = VAE(input_dim=8, latent_dim=4)
 
-    x = torch.rand(8, 9)
+    x = torch.rand(8, 8)
 
     reconstructed, mu, logvar = model(x)
 
@@ -24,9 +24,9 @@ def test_vae_loss_is_positive():
 
 
 def test_vae_loss_has_gradient():
-    model = VAE(input_dim=9, latent_dim=4)
+    model = VAE(input_dim=8, latent_dim=4)
 
-    x = torch.rand(8, 9)
+    x = torch.rand(8, 8)
 
     reconstructed, mu, logvar = model(x)
 
@@ -45,4 +45,7 @@ def test_vae_loss_has_gradient():
         if parameter.requires_grad
     ]
 
-    assert any(gradient is not None for gradient in gradients)
+    assert any(
+        gradient is not None
+        for gradient in gradients
+    )
